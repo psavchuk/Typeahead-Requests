@@ -8,14 +8,16 @@ async function windowActions() {
     const endpoint = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json';
 
     //list
-    const places = [];
+
 
     //const request = await get('/api');
     //const data = await request.json();
 
-    fetch(endpoint)
-        .then(blob => blob.json())
-        .then(data => places.push(...data));
+    const request = await fetch(endpoint);
+        //.then(blob => blob.json())
+        //.then(data => places.push(...data));
+
+    const places = await request.json();
 
     function findMatches(wordToMatch, places) {
         return places.filter(place => {
@@ -24,9 +26,8 @@ async function windowActions() {
         });
     }
 
-    function displayMatches() {
-        const matchArray = findMatches(this.value, places);
-        console.log(matchArray);
+    function displayMatches(event) {
+        const matchArray = findMatches(event.target.value, places);
 
         const html = matchArray.map(place => {
             return `
@@ -48,8 +49,10 @@ async function windowActions() {
         list.innerHTML = html;
     }
 
-    search.addEventListener('input', displayMatches);
-
+    search.addEventListener('change', displayMatches);
+    search.addEventListener('keyup', (evt) => {
+        displayMatches(evt)
+    });
     
 }
 
