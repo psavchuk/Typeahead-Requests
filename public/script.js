@@ -29,24 +29,33 @@ async function windowActions() {
     function displayMatches(event) {
         const matchArray = findMatches(event.target.value, places);
 
-        const html = matchArray.map(place => {
-            return `
-                <div class="result">
-                
-                    <li>
-                        <span class="name is-capitalized is-size-4">
-                            ${place.name}
-                        </span>
-                        <span class="category">
-                            ${place.category}
-                        </span>
-                    </li>
+        if(event.target.value === "")
+        {
+            list.innerHTML = "";  
+        }
+        else
+        {
+            const html = matchArray.map(place => {
+                return `
+                    <div class="result">
+                    
+                        <li>
+                            <span class="name is-capitalized is-size-4">
+                                ${place.name}
+                            </span>
+                            <span class="category">
+                                ${place.category}
+                            </span>
+                        </li>
+    
+                    </div>
+                    `
+            }).join('');
 
-                </div>
-                `
-        }).join('');
+            list.innerHTML = html;
+        }
 
-        list.innerHTML = html;
+        
     }
 
     search.addEventListener('change', displayMatches);
