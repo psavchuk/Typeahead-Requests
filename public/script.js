@@ -28,7 +28,12 @@ async function windowActions() {
 
     function displayMatches(event) {
         const matchArray = findMatches(event.target.value, places);
-
+        if (event.target.value ==="")
+        {
+          list.innerHTML = "";
+        }
+        else 
+        {
         const html = matchArray.map(place => {
           const regex = new RegExp(event.target.value, 'gi');
           const nameMatch = place.name.replace(regex, `<span class='hl'>${event.target.value}</span>`);
@@ -52,6 +57,7 @@ async function windowActions() {
         }).join('');
 
         list.innerHTML = html;
+      }
     }
 
     search.addEventListener('change', displayMatches);
