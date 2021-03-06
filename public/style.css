@@ -1,15 +1,34 @@
 *{
     font-family:'rocknroll one';
+    cursor: default;
 }
+
+html {
+    background-color: #C2EABD;
+}
+
 body{
-    background-color: #C7AC92;
     min-height: 1080px;
     height: 100%;
     width: 100%
 }
+
+h1{
+    color: #000000;
+}
+
+.container {
+    padding: 0 45px 10px 45px;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    background-image: linear-gradient(#ffffff00, #cfe9cb);
+    background-attachment: fixed;
+}
+
 .hl{
     background-color: yellow;
 }
+
 .result {
     background-image: linear-gradient(#DCF2B0, #C2EABD);
     display: flex;
@@ -19,11 +38,17 @@ body{
     padding: 10px;
     border-radius: 5px;
 }
+
+.name:hover {
+    color: #ffffff;
+}
+
 .title {
-    padding-top:60px;
+    padding-top: 40px;
     text-align:center;
 }
 #searchbar {
-    margin-bottom: 20px;
-    margin-top: 20px
+    margin: 20px 0;
 }
+
+
