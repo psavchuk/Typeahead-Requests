@@ -30,18 +30,23 @@ async function windowActions() {
         const matchArray = findMatches(event.target.value, places);
 
         const html = matchArray.map(place => {
+          const regex = new RegExp(event.target.value, 'gi');
+          const nameMatch = place.name.replace(regex, `<span class='hl'>${event.target.value}</span>`);
+          const catMatch = place.category.replace(regex, `<span class='hl'>${event.target.value}</span>`)
             return `
                 <div class="result">
-                
                     <li>
                         <span class="name is-capitalized is-size-4">
-                            ${place.name}
+                          ${nameMatch.toLowerCase()}
                         </span>
-                        <span class="category">
-                            ${place.category}
+                        <span class="category is-capitalized">
+                          ${catMatch.toLowerCase()}
                         </span>
+                        <address>
+                          ${place.address_line_1.toUpperCase()}<br>
+                          ${place.zip}
+                        </address>
                     </li>
-
                 </div>
                 `
         }).join('');
