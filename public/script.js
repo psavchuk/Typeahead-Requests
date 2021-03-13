@@ -1,49 +1,69 @@
-async function windowActions(){
-const endpoint = "https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json"
+async function windowActions() {
+
+  const form = document.querySelector(".userform");
+  const search = document.querySelector("#search");
+  const list = document.querySelector(".results")
+  
+  const endpoint = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json';
+
+  //list
 
 
-const request = await fetch(endpoint)
+  //const request = await get('/api');
+  //const data = await request.json();
 
+  const request = await fetch(endpoint);
+      //.then(blob => blob.json())
+      //.then(data => places.push(...data));
 
+  const places = await request.json();
 
-const restaurants = await request.json()
-console.log(restaurants)
-function findMatches(ZipToMatch, restaurants){
-  return restaurants.filter(place => {
-    const regex = new RegExp(ZipToMatch, 'gi')
-    return place.zip.match(regex)
-  });
-}
+  function findMatches(wordToMatch, places) {
+      return places.filter(place => {
+          const regex = new RegExp(wordToMatch, 'gi');
+          return place.name.match(regex) || place.category.match(regex);
+      });
+  }
 
-function displayMatches(event) {
-    console.log(event.target.value);
-    const matchArray = findMatches(event.target.value, restaurants);
-    console.log(matchArray)
-
-    const htmlstuff= matchArray.map(place => {
+  function displayMatches(event) {
+      const matchArray = findMatches(event.target.value, places);
+      if (event.target.value ==="")
+      {
+        list.innerHTML = "";
+      }
+      else 
+      {
+      const html = matchArray.map(place => {
         const regex = new RegExp(event.target.value, 'gi');
-        const zipMatch = place.zip.replace(regex, `<span class='hl'>${event.target.value}</span>`)
+        const nameMatch = place.name.replace(regex, `<span class='hl'>${event.target.value}</span>`);
+        const catMatch = place.category.replace(regex, `<span class='hl'>${event.target.value}</span>`)
+          return `
+              <div class="result">
+                  <li>
+                      <span class="name is-capitalized is-size-4">
+                        ${nameMatch.toLowerCase()}
+                      </span>
+                      <span class="category is-capitalized">
+                        ${catMatch.toLowerCase()}
+                      </span>
+                      <address>
+                        ${place.address_line_1.toUpperCase()}<br>
+                        ${place.zip}
+                      </address>
+                  </li>
+              </div>
+              `
+      }).join('');
 
-        return `
-        <div class="result"
-          <li>
-            <span class="name is-capitalized is-size-4">${place.name.toLowerCase()}</span>
-            <span class="category is-capitalized">${place.category.toLowerCase()}</span>
-            <address>${place.address_line_1.toUpperCase()}<br> ${zipMatch}</address>
-          </li>
-        </div>`;
+      list.innerHTML = html;
+    }
+  }
 
-    }).join('');
-    
-    results.innerHTML = htmlstuff;
-    console.log(htmlstuff)
+  search.addEventListener('change', displayMatches);
+  search.addEventListener('keyup', (evt) => {
+      displayMatches(evt)
+  });
+  
 }
 
-const searchInput = document.querySelector("#search")
-const results = document.querySelector(".results")
-
-searchInput.addEventListener('change', displayMatches)
-searchInput.addEventListener('keyup', (evt) => {displayMatches(evt)})
-console.log(searchInput)
-}
 window.onload = windowActions;

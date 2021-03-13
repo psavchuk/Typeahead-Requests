@@ -32,7 +32,7 @@ h1{
 .result {
     background-image: linear-gradient(#DCF2B0, #C2EABD);
     display: flex;
-    flex-flow: column wrap;
+    flex-direction: column;
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 10px;
@@ -50,5 +50,3 @@ h1{
 #searchbar {
     margin: 20px 0;
 }
-
-
